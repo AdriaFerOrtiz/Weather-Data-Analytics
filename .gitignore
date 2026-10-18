@@ -1,0 +1,30 @@
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Archivos de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Datos y bases de datos generados localmente
+data/
+*.duckdb
+*.duckdb.wal
+
+# Configuración local de editores
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Datos meteorológicos generados
+weather_barcelona.csv
