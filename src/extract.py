@@ -1,21 +1,47 @@
 
-from pathlib import Path
+import logging
 
 import pandas as pd
+import requests
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CSV_PATH = PROJECT_ROOT / "weather_barcelona.csv"
+logger = logging.getLogger(__name__)
+
+API_URL = "https://api.open-meteo.com/v1/forecast"
+
+PARAMS = {
+    "latitude": 41.3874,
+    "longitude": 2.1686,
+    "hourly": "temperature_2m,precipitation,wind_speed_10m",
+    "forecast_days": 3,
+    "timezone": "Europe/Madrid",
+}
 
 
 def extract_weather_data() -> pd.DataFrame:
-    """Extract weather observations from the generated CSV."""
-    if not CSV_PATH.exists():
-        raise FileNotFoundError(
-            f"No se encuentra el archivo de datos: {CSV_PATH}"
-        )
+    """Extract hourly weather forecasts from Open-Meteo."""
+    logger.info("Solicitando datos a Open-Meteo")
 
-    df = pd.read_csv(CSV_PATH)
+    response = requests.get(
+        API_URL,
+        params=PARAMS,
+        timeout=30,
+    )
+    response.raise_for_status()
 
-    print(f"Datos extraídos: {len(df)} filas")
+    data = response.json()
+
+    if "hourly" not in data:
+        raise ValueError("La respuesta de la API no contiene datos horarios")
+
+    hourly = data["hourly"]
+
+    df = pd.DataFrame({
+        "timestamp": hourly["time"],
+        "temperature_c": hourly["temperature_2m"],
+        "precipitation_mm": hourly["precipitation"],
+        "wind_speed_kmh": hourly["wind_speed_10m"],
+    })
+
+    logger.info("Extraídas %s observaciones", len(df))
     return df

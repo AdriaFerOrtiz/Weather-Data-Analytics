@@ -30,11 +30,12 @@ En desarrollo. Actualmente se está preparando el entorno y la primera extracci�
 
 ## Pipeline de datos
 
-1. **Extract:** lectura de las observaciones meteorológicas desde un CSV.
-2. **Transform:** conversión de tipos, eliminación de registros incompletos y duplicados, y validación de mediciones.
-3. **Load:** almacenamiento en DuckDB mediante una carga que actualiza las observaciones existentes.
-4. **Analyze:** consultas SQL para calcular estadísticas generales y agregaciones diarias.
-5. **Quality checks:** comprobación de valores nulos, marcas de tiempo duplicadas y mediciones negativas.
+1. **Extract:** consulta la API de previsión meteorológica de Open-Meteo.
+2. **Transform:** convierte tipos, elimina filas incompletas y duplicadas y valida las mediciones.
+3. **Load:** carga las observaciones en DuckDB y actualiza los registros existentes.
+4. **Analyze:** ejecuta consultas SQL para obtener estadísticas meteorológicas.
+5. **Quality checks:** comprueba valores nulos, marcas de tiempo duplicadas y mediciones negativas.
+6. **Logging:** registra las etapas del pipeline, el número de observaciones procesadas y los errores.
 
 ## Ejecución
 
@@ -62,7 +63,11 @@ Ejecuta los controles de calidad:
 python src/quality_checks.py
 ```
 
-## Almacenamiento
+## Almacenamiento y logs
 
-La base de datos se genera localmente en `data/weather.duckdb`.
-Los archivos de datos generados no se versionan en Git.
+La base de datos se almacena localmente en `data/weather.duckdb`.
+
+Los registros de ejecución se guardan en
+`logs/weather_pipeline.log`.
+
+Los archivos generados localmente no se versionan en Git.

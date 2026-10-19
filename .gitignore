@@ -28,3 +28,7 @@ Thumbs.db
 
 # Datos meteorológicos generados
 weather_barcelona.csv
+
+# Logs generados localmente
+logs/
+*.log
