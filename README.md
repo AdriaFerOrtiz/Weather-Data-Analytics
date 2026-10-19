@@ -22,11 +22,12 @@ Proyecto de portfolio de Data Engineering y Business Intelligence para recopilar
 
 ## Arquitectura
 
-Open-Meteo API → Python / Pandas → DuckDB → Power BI
-
-## Estado del proyecto
-
-En desarrollo. Actualmente se está preparando el entorno y la primera extracción de datos meteorológicos.
+1. **Extract:** consulta la API de Open-Meteo.
+2. **Transform:** valida, limpia y ordena los datos.
+3. **Load:** almacena los registros en DuckDB.
+4. **Analyze:** ejecuta consultas SQL de análisis.
+5. **Dashboard preparation:** genera un resumen diario en CSV
+   para utilizarlo en Power BI Desktop.
 
 ## Pipeline de datos
 
@@ -63,6 +64,21 @@ Ejecuta los controles de calidad:
 python src/quality_checks.py
 ```
 
+Para generar el resumen diario destinado a Business Intelligence:
+
+```bash
+python src/prepare_dashboard.py
+```
+
+### Fiabilidad y calidad
+
+- Registro de eventos y errores mediante logging.
+- Reintentos HTTP para determinados fallos temporales.
+- Validación de columnas, tipos, valores nulos y duplicados.
+- Carga idempotente por timestamp mediante actualización
+  de los registros que ya existen.
+
+
 ## Almacenamiento y logs
 
 La base de datos se almacena localmente en `data/weather.duckdb`.
@@ -71,3 +87,12 @@ Los registros de ejecución se guardan en
 `logs/weather_pipeline.log`.
 
 Los archivos generados localmente no se versionan en Git.
+
+### Limitaciones
+
+- Los datos proceden de una API de previsiones, no de una
+  estación meteorológica que mida el tiempo real.
+- Los timestamps antiguos se conservan en la base de datos.
+- Las previsiones de una misma fecha pueden cambiar entre
+  ejecuciones.
+- La base de datos y los CSV generados se almacenan localmente.
