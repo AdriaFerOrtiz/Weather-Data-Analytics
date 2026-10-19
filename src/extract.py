@@ -14,7 +14,7 @@ PARAMS = {
     "latitude": 41.3874,
     "longitude": 2.1686,
     "hourly": "temperature_2m,precipitation,wind_speed_10m",
-    "forecast_days": 3,
+    "forecast_days": 4,
     "timezone": "Europe/Madrid",
 }
 
