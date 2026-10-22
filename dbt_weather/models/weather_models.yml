@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: stg_weather
+    description: "Vista de staging con las observaciones meteorológicas horarias."
+
+    columns:
+      - name: timestamp
+        description: "Fecha y hora de cada observación."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: temperature_c
+        description: "Temperatura observada en grados Celsius."
+
+      - name: precipitation_mm
+        description: "Precipitación del intervalo en milímetros."
+
+      - name: wind_speed_kmh
+        description: "Velocidad del viento en kilómetros por hora."
+
+  - name: mart_weather_daily
+    description: "Tabla con métricas meteorológicas agregadas por día."
+
+    columns:
+      - name: weather_date
+        description: "Fecha a la que corresponden las métricas."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: observations_count
+        description: "Número de observaciones del día."
+        data_tests:
+          - not_null
+
+      - name: avg_temperature_c
+        description: "Temperatura media diaria en grados Celsius."
+
+      - name: min_temperature_c
+        description: "Temperatura mínima diaria en grados Celsius."
+
+      - name: max_temperature_c
+        description: "Temperatura máxima diaria en grados Celsius."
+
+      - name: total_precipitation_mm
+        description: "Precipitación acumulada del día en milímetros."
+
+      - name: avg_wind_speed_kmh
+        description: "Velocidad media diaria del viento en km/h."
+
+      - name: max_wind_speed_kmh
+        description: "Velocidad máxima diaria del viento en km/h."
+
+      - name: hours_with_precipitation
+        description: "Número de observaciones con precipitación superior a cero."
